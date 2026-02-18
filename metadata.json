@@ -1,0 +1,5 @@
+{
+  "name": "IntelliQA - AI Test Assistant",
+  "description": "An intelligent, automated testing assistant that simulates authentication, CRUD, UI/UX, performance, and security tests, providing deep analysis and risk scoring using Gemini AI.",
+  "requestFramePermissions": []
+}
