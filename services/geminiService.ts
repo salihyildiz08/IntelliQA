@@ -60,6 +60,29 @@ const reportSchema = {
   required: ["summary", "scores", "details", "patterns"],
 };
 
+// Robust helper to find the API key in various environments (Vite, CRA, Next.js, Node)
+const getApiKey = (): string | undefined => {
+  // 1. Try Vite / Modern Browsers (import.meta.env)
+  // @ts-ignore
+  if (typeof import.meta !== 'undefined' && import.meta.env) {
+    // @ts-ignore
+    if (import.meta.env.VITE_API_KEY) return import.meta.env.VITE_API_KEY;
+    // @ts-ignore
+    if (import.meta.env.NEXT_PUBLIC_API_KEY) return import.meta.env.NEXT_PUBLIC_API_KEY;
+    // @ts-ignore
+    if (import.meta.env.API_KEY) return import.meta.env.API_KEY;
+  }
+
+  // 2. Try Standard process.env (Node, Webpack, CRA)
+  if (typeof process !== 'undefined' && process.env) {
+    if (process.env.API_KEY) return process.env.API_KEY;
+    if (process.env.REACT_APP_API_KEY) return process.env.REACT_APP_API_KEY;
+    if (process.env.NEXT_PUBLIC_API_KEY) return process.env.NEXT_PUBLIC_API_KEY;
+  }
+
+  return undefined;
+};
+
 export const generateTestReport = async (
   url: string,
   description: string,
@@ -67,11 +90,11 @@ export const generateTestReport = async (
   password?: string
 ): Promise<TestReport> => {
   
-  // Safe access to process.env for Vercel/Browser compatibility
-  const apiKey = typeof process !== 'undefined' ? process.env.API_KEY : undefined;
+  const apiKey = getApiKey();
 
   if (!apiKey) {
-    throw new Error("API Key not found. Please add API_KEY to Vercel Environment Variables.");
+    console.error("API Key missing. Checked process.env.API_KEY, VITE_API_KEY, REACT_APP_API_KEY.");
+    throw new Error("API Key not found. Please add VITE_API_KEY to Environment Variables.");
   }
 
   const ai = new GoogleGenAI({ apiKey });

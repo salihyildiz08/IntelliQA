@@ -112,10 +112,15 @@ const App: React.FC = () => {
                <AlertOctagon size={32} />
              </div>
              <h2 className="text-white text-2xl font-bold mb-4">Analiz Başlatılamadı</h2>
-             <p className="text-slate-400 mb-8 max-w-lg mx-auto leading-relaxed">
-               Zeka motoruna erişim sağlanamadı. Eğer projeyi <strong>Vercel</strong> üzerinde çalıştırıyorsanız, 
-               Settings {'>'} Environment Variables kısmına <code className="bg-slate-800 px-2 py-0.5 rounded text-cyan-400 font-mono text-sm">API_KEY</code> eklediğinizden emin olun.
-             </p>
+             <div className="text-slate-400 mb-8 max-w-lg mx-auto leading-relaxed bg-slate-900/50 p-6 rounded-lg border border-slate-800 text-left">
+               <p className="mb-4 text-red-400 font-semibold">API Anahtarı Bulunamadı veya Hatalı.</p>
+               <p className="mb-2 text-sm">Vercel üzerinde çalışıyorsanız aşağıdaki adımları kontrol edin:</p>
+               <ol className="list-decimal pl-5 text-sm space-y-2 text-slate-300">
+                 <li>Vercel panelinde <strong>Settings {'>'} Environment Variables</strong> kısmına gidin.</li>
+                 <li>Değişken adının <strong><code className="text-cyan-400">VITE_API_KEY</code></strong> olduğundan emin olun. (Sadece API_KEY çalışmayabilir).</li>
+                 <li>Değişiklik yaptıktan sonra Deployments sekmesinden projeyi <strong>Redeploy</strong> yapmayı unutmayın.</li>
+               </ol>
+             </div>
              <button 
                 onClick={() => setStatus(TestStatus.IDLE)}
                 className="px-8 py-3 bg-white text-slate-950 font-bold rounded-lg hover:bg-slate-200 transition-colors shadow-lg"
